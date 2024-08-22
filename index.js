@@ -109,7 +109,7 @@ class convertCurrency {
      * @param countryCode Country 3 digit code to be inserted
      * @param exchangeRate Country Exchange rate
      */
-    createNewRecord(countryCode, exchangeRate) {
+    createNewRecord (countryCode, exchangeRate) {
         const query = `INSERT INTO Currencies (currencyCode, exchangeRate) VALUES (?, ?)`;
         this.db.run(query, [countryCode, exchangeRate], function(err) {
             if (err) {
@@ -117,6 +117,37 @@ class convertCurrency {
                 return;
             }
             console.log('New currency inserted with ID:', this.lastID);
+        });
+        // close db connection
+        this.db.close((err) => {
+            // catch and log err
+            if (err) {
+                console.error('Error closing db connection', err);
+            }
+        });
+    }
+
+    /**
+     * Read the record for a given country code
+     * @param countryCode country 3 digit code
+     */
+    readRecord (countryCode) {
+        const query = `SELECT * FROM Currencies WHERE currencyCode = ?`;
+        this.db.get(query, [countryCode], (err, row) => {
+            if (err) {
+                console.error(err);
+            } else {
+                if (row) {
+                    console.log(`Row ${row.currencyID} data is: ${row.currencyCode} has an exchange rate of ${row.exchangeRate}`);
+                }
+            }
+        });
+        // close db connection
+        this.db.close((err) => {
+            // catch and log err
+            if (err) {
+                console.error('Error closing db connection', err);
+            }
         });
     }
 }
@@ -130,5 +161,8 @@ const myConversion = new convertCurrency();
 
 // create new row
 // myConversion.createNewRecord("COL", 0.756);
+
+// read record
+myConversion.readRecord('COL');
 
 module.exports = convertCurrency;
