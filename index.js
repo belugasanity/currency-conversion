@@ -103,6 +103,22 @@ class convertCurrency {
             });
         });
     }
+
+    /**
+     * Add a new country exchange info
+     * @param countryCode Country 3 digit code to be inserted
+     * @param exchangeRate Country Exchange rate
+     */
+    createNewRecord(countryCode, exchangeRate) {
+        const query = `INSERT INTO Currencies (currencyCode, exchangeRate) VALUES (?, ?)`;
+        this.db.run(query, [countryCode, exchangeRate], function(err) {
+            if (err) {
+                console.error('Error inserting currency:', err.message);
+                return;
+            }
+            console.log('New currency inserted with ID:', this.lastID);
+        });
+    }
 }
 const myConversion = new convertCurrency();
 
@@ -110,6 +126,9 @@ const myConversion = new convertCurrency();
 // myConversion.convertCurrency("USD", "COL", 10).then((val) => console.log(`New value is: ${val}`));
 
 // This example will pass because 'PHP' is found in the database
-myConversion.convertCurrency("USD", "PHP", 10).then((val) => console.log(`New value is: ${val}`));
+// myConversion.convertCurrency("USD", "PHP", 10).then((val) => console.log(`New value is: ${val}`));
+
+// create new row
+// myConversion.createNewRecord("COL", 0.756);
 
 module.exports = convertCurrency;
