@@ -150,6 +150,28 @@ class convertCurrency {
             }
         });
     }
+
+    /**
+     * Update the record for the given country code
+     * @param countryCode country 3 digit code
+     * @param newExchangeRate the new exchange rate for the given country code
+     */
+    updateRecord (countryCode, newExchangeRate) {
+        const query = `UPDATE Currencies SET exchangeRate = ? WHERE currencyCode = ?`;
+        this.db.run(query, [newExchangeRate, countryCode], function(err) {
+            if (err) {
+                console.error(err);
+            }
+            console.log(`Row(s) updated: ${this.changes}`);
+        });
+        // close db connection
+        this.db.close((err) => {
+            // catch and log err
+            if (err) {
+                console.error('Error closing db connection', err);
+            }
+        });
+    }
 }
 const myConversion = new convertCurrency();
 
@@ -163,6 +185,9 @@ const myConversion = new convertCurrency();
 // myConversion.createNewRecord("COL", 0.756);
 
 // read record
-myConversion.readRecord('COL');
+// myConversion.readRecord('COL');
+
+// update record
+myConversion.updateRecord('COL', 12.33);
 
 module.exports = convertCurrency;
