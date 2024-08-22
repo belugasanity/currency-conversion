@@ -1,0 +1,19 @@
+{
+  "name": "currencyconverter",
+  "version": "1.0.0",
+  "description": "Simple currency converter",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest",
+    "setup": "node setup_db.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "sqlite3": "^5.1.7"
+  }
+}

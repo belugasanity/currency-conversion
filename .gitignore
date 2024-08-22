@@ -1,0 +1,10 @@
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE - VSCode
+.vscode/
+
+# Other files/directories
+/node_modules
+*.db
