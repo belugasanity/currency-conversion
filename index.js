@@ -135,10 +135,12 @@ class convertCurrency {
         const query = `SELECT * FROM Currencies WHERE currencyCode = ?`;
         this.db.get(query, [countryCode], (err, row) => {
             if (err) {
-                console.error(err);
+                console.error('Error reading record:', err.message);
             } else {
                 if (row) {
                     console.log(`Row ${row.currencyID} data is: ${row.currencyCode} has an exchange rate of ${row.exchangeRate}`);
+                } else {
+                    console.log('Record not found');
                 }
             }
         });
@@ -160,9 +162,30 @@ class convertCurrency {
         const query = `UPDATE Currencies SET exchangeRate = ? WHERE currencyCode = ?`;
         this.db.run(query, [newExchangeRate, countryCode], function(err) {
             if (err) {
-                console.error(err);
+                console.error('Error updating record:', err.message);
             }
             console.log(`Row(s) updated: ${this.changes}`);
+        });
+        // close db connection
+        this.db.close((err) => {
+            // catch and log err
+            if (err) {
+                console.error('Error closing db connection', err);
+            }
+        });
+    }
+
+    /**
+     * Delete record for given country code
+     * @param countryCode country 3 digit code (USD)
+     */
+    deleteRecord (countryCode) {
+        const query = `DELETE FROM Currencies WHERE currencyCode = ?`;
+        this.db.run(query, [countryCode], function(err) {
+            if (err) {
+                console.error('Error deleting record:', err.message);
+            }
+            console.log('Record has been deleted');
         });
         // close db connection
         this.db.close((err) => {
@@ -188,6 +211,9 @@ const myConversion = new convertCurrency();
 // myConversion.readRecord('COL');
 
 // update record
-myConversion.updateRecord('COL', 12.33);
+// myConversion.updateRecord('COL', 12.33);
+
+// delete record
+// myConversion.deleteRecord('COL');
 
 module.exports = convertCurrency;
