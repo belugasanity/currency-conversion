@@ -7,7 +7,7 @@ Install node modules by running `npm i`
 Setup the SQLite database by running `npm run setup`
 
 ## Step 3
-Run the application with `npm start`
+Uncomment line `205` and run the application with `npm start`
 
 ### 3.1
 Adjust the code on rows `111` or `114` and run the app again.

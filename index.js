@@ -29,7 +29,12 @@ class convertCurrency {
             }
             // else !== USD to !== USD
             else {
-                exchangeRate = await this.getDatabaseExchangeRate(currencyTo);
+                // convert to USD
+                exchangeRate = await this.getDatabaseExchangeRate('USD');
+                // set new amount in USD
+                amount = amount / exchangeRate;
+                // convert to new
+                exchangeRate = await this.getDatabaseExchangeRate(currencyTo)
                 // multiply to get new amount
                 multiply = true;
             }
